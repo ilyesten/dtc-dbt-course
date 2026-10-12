@@ -1,0 +1,8 @@
+sources:
+  - name: staging
+    database: dtc-de-course-510513 # Or name of your GCP project
+    schema: trips_data_all # Or name of your BigQuery dataset
+
+    tables:
+      - name: green_tripdata
+      - name: yellow_tripdata
