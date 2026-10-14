@@ -1,0 +1,18 @@
+models:
+  - name: int_trips_unioned
+    description: >
+      Union of green and yellow staging models. One row per trip, not deduplicated:
+      may contain duplicates from the source. Not intended for direct consumption,
+      use fct_trips instead.
+    config:
+      meta:
+        owner: ilyes
+    columns:
+      - name: service_type
+        description: Origin of the trip, 'Green' or 'Yellow'. Added before the union to keep provenance.
+      - name: vendor_id
+        description: Technology provider code. See dim_vendors for labels.
+      - name: pickup_location_id
+        description: Taxi zone where the trip started.
+      - name: dropoff_location_id
+        description: Taxi zone where the trip ended.
