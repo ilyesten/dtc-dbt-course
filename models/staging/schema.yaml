@@ -1,0 +1,50 @@
+models:
+  - name: stg_green_tripdata
+    description: >
+      Green taxi trips for 2019, cleaned from the raw source: columns renamed
+      to snake_case and explicitly cast. Rows with a null vendor ID (~7% of
+      the source) are filtered out. Contains aberrant timestamps (e.g. 2008, 2062).
+    config:
+      meta:
+        owner: ilyes
+    columns:
+      - name: vendor_id
+        description: Technology provider code (1 = Creative Mobile Technologies, 2 = VeriFone).
+      - name: pickup_location_id
+        description: Taxi zone where the trip started (joins to dim_zones.location_id).
+      - name: dropoff_location_id
+        description: Taxi zone where the trip ended (joins to dim_zones.location_id).
+      - name: pickup_datetime
+        description: Trip start timestamp (lpep_pickup_datetime in the source).
+      - name: dropoff_datetime
+        description: Trip end timestamp (lpep_dropoff_datetime in the source).
+      - name: store_and_fwd_flag
+        description: Y if the trip record was held in vehicle memory before being sent, N otherwise.
+      - name: trip_type
+        description: 1 = street-hail, 2 = dispatch (booked by phone or app).
+      - name: ehail_fee
+        description: Fee for trips requested through an e-hail app. Mostly null or zero.
+
+  - name: stg_yellow_tripdata
+    description: >
+      Yellow taxi trips for 2019, aligned on the green schema to allow a UNION ALL.
+      Rows with a null vendor ID are filtered out. trip_type and ehail_fee do not
+      exist in the source and are added as constants.
+    config:
+      meta:
+        owner: ilyes
+    columns:
+      - name: vendor_id
+        description: Technology provider code (1, 2, or 4 = undocumented, present only in yellow data).
+      - name: pickup_location_id
+        description: Taxi zone where the trip started (joins to dim_zones.location_id).
+      - name: dropoff_location_id
+        description: Taxi zone where the trip ended (joins to dim_zones.location_id).
+      - name: pickup_datetime
+        description: Trip start timestamp (tpep_pickup_datetime in the source).
+      - name: dropoff_datetime
+        description: Trip end timestamp (tpep_dropoff_datetime in the source).
+      - name: trip_type
+        description: Constant 1 (street-hail). Yellow cabs can only be hailed on the street.
+      - name: ehail_fee
+        description: Constant 0. Yellow cabs never charge an e-hail fee.

@@ -1,8 +1,15 @@
 sources:
   - name: staging
-    database: dtc-de-course-510513 # Or name of your GCP project
-    schema: trips_data_all # Or name of your BigQuery dataset
+    description : > 
+      Loaded by the Kestra flow 09_gcp_taxi_scheduled (monthly CSV → GCS → MERGE into native BigQuery tables.
+      Contains both yellow and green taxi trip records for 2019.
+    database: dtc-de-course-510513 
+    schema: trips_data_all 
 
     tables:
       - name: green_tripdata
+        description : >
+          Green taxi trip records. Green taxis operate primarily in
+          outer boroughs (outside Manhattan).
       - name: yellow_tripdata
+        description : Yellow taxi trips, primarily from Manhattan
