@@ -9,10 +9,26 @@ models:
         owner: ilyes
     columns:
       - name: service_type
+        data_tests: 
+        - accepted_values:
+            arguments:
+              values: ['Yellow','Green']
         description: Origin of the trip, 'Green' or 'Yellow'. Added before the union to keep provenance.
       - name: vendor_id
         description: Technology provider code. See dim_vendors for labels.
       - name: pickup_location_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_zones')
+                field: location_id
         description: Taxi zone where the trip started.
       - name: dropoff_location_id
         description: Taxi zone where the trip ended.
+      - name: trip_distance
+        data_tests: 
+          - positive_values:
+              config:
+                severity: warn
+        description: The distance of the trip in miles
+        
